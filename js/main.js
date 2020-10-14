@@ -1,17 +1,16 @@
 import galleryItems from './gallery-items.js';
 
-const refs = {
-  galleryContainer: document.querySelector('.js-gallery'),
-  cardsMarkup: createGalleryCardsMarkup(galleryItems),
-  modal: document.querySelector('.js-lightbox'),
-  bigImg: document.querySelector('.lightbox__image'),
-  closeModalBtn: document.querySelector('button[data-action="close-lightbox"]'),
-};
+const galleryContainer = document.querySelector('.js-gallery');
+const cardsMarkup = createGalleryCardsMarkup(galleryItems);
+const modalWindow = document.querySelector('.js-lightbox');
+const bigPicture = document.querySelector('.lightbox__image');
+const closeModalBtn = document.querySelector(
+  'button[data-action="close-lightbox"]',
+);
 
-refs.galleryContainer.insertAdjacentHTML('beforeend', cardsMarkup);
-refs.galleryContainer.addEventListener('click', onGalleryContainerClick);
+galleryContainer.insertAdjacentHTML('beforeend', cardsMarkup);
+galleryContainer.addEventListener('click', onGalleryContainerClick);
 
-//Создание галереи
 function createGalleryCardsMarkup(galleryItems) {
   return galleryItems
     .map(({ preview, original, description }) => {
@@ -46,17 +45,17 @@ function onGalleryContainerClick(evt) {
   openImage(evt);
 
   window.addEventListener('keydown', handleKeyPress);
-  refs.closeModalBtn.addEventListener('click', closeModal);
+  closeModalBtn.addEventListener('click', closeModal);
 }
 
 function addActiveModalClass() {
-  refs.modal.classList.add('is-open');
+  modalWindow.classList.add('is-open');
   console.log('modalWindow');
 }
 
 function openImage(evt) {
-  refs.bigImg.src = evt.target.dataset.source;
-  refs.bigImg.alt = evt.target.alt;
+  bigPicture.src = evt.target.dataset.source;
+  bigPicture.alt = evt.target.alt;
   console.log('openImage');
 }
 
@@ -70,10 +69,11 @@ function handleKeyPress(evt) {
 }
 
 function closeModal() {
-  refs.modal.classList.remove('is-open');
+  modalWindow.classList.remove('is-open');
+  bigPicture.src = '';
+  bigPicture.alt = '';
   window.removeEventListener('keydown', handleKeyPress);
-  refs.closeModalBtn.removeEventListener('click', closeModal);
-  refs.bigImg.src = '';
-  refs.bigImg.alt = '';
+  closeModalBtn.removeEventListener('click', closeModal);
+
   console.log('closeModal');
 }
