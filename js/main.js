@@ -1,16 +1,17 @@
 import galleryItems from './gallery-items.js';
 
-const galleryContainer = document.querySelector('.js-gallery');
-const cardsMarkup = createGalleryCardsMarkup(galleryItems);
-const modalWindow = document.querySelector('.js-lightbox');
-const bigPicture = document.querySelector('.lightbox__image');
-const closeModalBtn = document.querySelector(
-  'button[data-action="close-lightbox"]',
-);
+const refs = {
+  galleryContainer: document.querySelector('.js-gallery'),
+  cardsMarkup: createGalleryCardsMarkup(galleryItems),
+  modal: document.querySelector('.js-lightbox'),
+  bigImg: document.querySelector('.lightbox__image'),
+  closeModalBtn: document.querySelector('button[data-action="close-lightbox"]'),
+};
 
-galleryContainer.insertAdjacentHTML('beforeend', cardsMarkup);
-galleryContainer.addEventListener('click', onGalleryContainerClick);
+refs.galleryContainer.insertAdjacentHTML('beforeend', refs.cardsMarkup);
+refs.galleryContainer.addEventListener('click', onGalleryContainerClick);
 
+//Разметка галереи
 function createGalleryCardsMarkup(galleryItems) {
   return galleryItems
     .map(({ preview, original, description }) => {
@@ -32,35 +33,35 @@ function createGalleryCardsMarkup(galleryItems) {
     })
     .join('');
 }
+//Делегирование
+function onGalleryContainerClick(evt) {
+  evt.preventDefault();
 
-function onGalleryContainerClick(e) {
-  e.preventDefault();
-
-  if (e.target === e.currentTarget) {
+  if (evt.target === evt.currentTarget) {
     return;
   }
 
   addActiveModalClass();
 
-  openImage(e);
+  openImage(evt);
 
-  window.addEventListener('keydown', handleKeyPress);
-  closeModalBtn.addEventListener('click', closeModal);
+  window.addEventListener('keydown', KeyPress);
+  refs.closeModalBtn.addEventListener('click', closeModal);
 }
 
 function addActiveModalClass() {
-  modalWindow.classList.add('is-open');
-  console.log('modalWindow');
+  refs.modal.classList.add('is-open');
+  console.log('modal');
 }
 
-function openImage(e) {
-  bigPicture.src = e.target.dataset.source;
-  bigPicture.alt = e.target.alt;
+function openImage(evt) {
+  refs.bigImg.src = evt.target.dataset.source;
+  refs.bigImg.alt = evt.target.alt;
   console.log('openImage');
 }
 
-function handleKeyPress(e) {
-  if (e.code !== 'Escape') {
+function KeyPress(evt) {
+  if (evt.code !== 'Escape') {
     return;
   }
 
@@ -69,11 +70,11 @@ function handleKeyPress(e) {
 }
 
 function closeModal() {
-  modalWindow.classList.remove('is-open');
-  bigPicture.src = '';
-  bigPicture.alt = '';
-  window.removeEventListener('keydown', handleKeyPress);
-  closeModalBtn.removeEventListener('click', closeModal);
+  refs.modal.classList.remove('is-open');
+  refs.bigImg.src = '';
+  refs.bigImg.alt = '';
+  window.removeEventListener('keydown', KeyPress);
+  refs.closeModalBtn.removeEventListener('click', closeModal);
 
   console.log('closeModal');
 }
