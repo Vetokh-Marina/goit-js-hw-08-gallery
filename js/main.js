@@ -33,16 +33,16 @@ function createGalleryCardsMarkup(galleryItems) {
     .join('');
 }
 
-function onGalleryContainerClick(evt) {
-  evt.preventDefault();
+function onGalleryContainerClick(e) {
+  e.preventDefault();
 
-  if (evt.target === evt.currentTarget) {
+  if (e.target === e.currentTarget) {
     return;
   }
 
   addActiveModalClass();
 
-  openImage(evt);
+  openImage(e);
 
   window.addEventListener('keydown', handleKeyPress);
   closeModalBtn.addEventListener('click', closeModal);
@@ -53,14 +53,14 @@ function addActiveModalClass() {
   console.log('modalWindow');
 }
 
-function openImage(evt) {
-  bigPicture.src = evt.target.dataset.source;
-  bigPicture.alt = evt.target.alt;
+function openImage(e) {
+  bigPicture.src = e.target.dataset.source;
+  bigPicture.alt = e.target.alt;
   console.log('openImage');
 }
 
-function handleKeyPress(evt) {
-  if (evt.code !== 'Escape') {
+function handleKeyPress(e) {
+  if (e.code !== 'Escape') {
     return;
   }
 
